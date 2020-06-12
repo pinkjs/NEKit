@@ -12,9 +12,9 @@ public class ShadowsocksAdapter: AdapterSocket {
     }
 
     enum EncryptMethod: String {
-        case AES128CFB = "AES-128-CFB", AES192CFB = "AES-192-CFB", AES256CFB = "AES-256-CFB"
+        case AES128CFB = "AES-128-CFB", AES192CFB = "AES-192-CFB", AES256CFB = "AES-256-CFB", AES256GCM = "AES-256-GCM "
 
-        static let allValues: [EncryptMethod] = [.AES128CFB, .AES192CFB, .AES256CFB]
+        static let allValues: [EncryptMethod] = [.AES128CFB, .AES192CFB, .AES256CFB, .AES256GCM]
     }
 
     public let host: String

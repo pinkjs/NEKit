@@ -19,12 +19,27 @@ struct Buffer {
         buffer.append(data)
     }
 
+    mutating func replace(data: Data) {
+        buffer = data
+        offset = 0
+    }
+
+    mutating func reset() {
+        buffer = Data()
+        offset = 0
+    }
+
+
     mutating func squeeze() {
         guard offset > 0 else {
             return
         }
 
-        buffer.removeFirst(offset)
+        let buffer_ = buffer
+        buffer.withUnsafeMutableBytes {
+            buffer_.copyBytes(to: $0, from: offset..<buffer_.count)
+        }
+        buffer.replaceSubrange(buffer.count - offset ..< buffer.count, with: Data())
         offset = 0
     }
 
@@ -61,20 +76,16 @@ struct Buffer {
         offset -= length
     }
 
-    mutating func release() {
-        buffer = Data()
-    }
-
     mutating func withUnsafeBytes<T, U>(_ body: @escaping (UnsafePointer<T>) throws -> U ) rethrows -> U {
-        let c = buffer.count - offset
-        let o = offset
-
-        return try buffer.withUnsafeBytes { (ptr: UnsafeRawBufferPointer) -> U in
-            return try body(ptr.baseAddress!.advanced(by: o).bindMemory(to: T.self, capacity: c / MemoryLayout<T>.stride))
+        return try buffer.withUnsafeBytes { (ptr: UnsafePointer<UInt8>) -> U in
+            return try ptr.advanced(by: offset).withMemoryRebound(to: T.self, capacity: (buffer.count - offset) / MemoryLayout<T>.stride) {
+                return try body($0)
+            }
         }
     }
 
     mutating func skip(_ step: Int) {
         offset += step
     }
+
 }

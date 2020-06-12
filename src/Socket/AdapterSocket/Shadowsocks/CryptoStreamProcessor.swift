@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjackSwift
 
 extension ShadowsocksAdapter {
     public class CryptoStreamProcessor {
@@ -10,11 +11,15 @@ extension ShadowsocksAdapter {
             public init(password: String, algorithm: CryptoAlgorithm) {
                 self.password = password
                 self.algorithm = algorithm
-                key = CryptoHelper.getKey(password, methodType: algorithm)
+                key = CryptoHelper.EVP_BytesToKey(password, methodType: algorithm)
             }
 
             public func build() -> CryptoStreamProcessor {
-                return CryptoStreamProcessor(key: key, algorithm: algorithm)
+                if algorithm.isAead {
+                    return CryptoAeadProcessor(key: key, algorithm: algorithm)
+                } else {
+                    return CryptoStreamProcessor(key: key, algorithm: algorithm)
+                }
             }
         }
 
@@ -31,17 +36,18 @@ extension ShadowsocksAdapter {
 
         lazy var writeIV: Data = {
             [unowned self] in
-            CryptoHelper.getIV(self.algorithm)
+            CryptoHelper.getIV(algorithm)
             }()
         lazy var ivLength: Int = {
             [unowned self] in
-            CryptoHelper.getIVLength(self.algorithm)
+            CryptoHelper.getIVLength(algorithm)
             }()
-        lazy var encryptor: StreamCryptoProtocol = {
+
+        private lazy var encryptor: StreamCryptoProtocol? = {
             [unowned self] in
             self.getCrypto(.encrypt)
             }()
-        lazy var decryptor: StreamCryptoProtocol = {
+        private lazy var decryptor: StreamCryptoProtocol? = {
             [unowned self] in
             self.getCrypto(.decrypt)
             }()
@@ -51,12 +57,20 @@ extension ShadowsocksAdapter {
             self.algorithm = algorithm
         }
 
-        func encrypt(data: inout Data) {
-            return encryptor.update(&data)
+        private func encrypt(data: inout Data) {
+            if let encryptor = encryptor {
+                encryptor.update(&data)
+            } else {
+                DDLogError("no encryptor for \(algorithm)")
+            }
         }
 
-        func decrypt(data: inout Data) {
-            return decryptor.update(&data)
+        private func decrypt(data: inout Data) {
+            if let decryptor = decryptor {
+                decryptor.update(&data)
+            } else {
+                DDLogError("no decryptor for \(algorithm)")
+            }
         }
 
         public func input(data: Data) throws {
@@ -71,7 +85,7 @@ extension ShadowsocksAdapter {
                 }
 
                 data = buffer.get() ?? Data()
-                buffer.release()
+                buffer.reset()
             }
 
             decrypt(data: &data)
@@ -82,18 +96,18 @@ extension ShadowsocksAdapter {
             var data = data
             encrypt(data: &data)
             if sendKey {
-                return outputStreamProcessor!.output(data: data)
+                outputStreamProcessor!.output(data: data)
             } else {
                 sendKey = true
                 var out = Data(capacity: data.count + writeIV.count)
                 out.append(writeIV)
                 out.append(data)
 
-                return outputStreamProcessor!.output(data: out)
+                outputStreamProcessor!.output(data: out)
             }
         }
 
-        private func getCrypto(_ operation: CryptoOperation) -> StreamCryptoProtocol {
+        private func getCrypto(_ operation: CryptoOperation) -> StreamCryptoProtocol? {
             switch algorithm {
             case .AES128CFB, .AES192CFB, .AES256CFB:
                 switch operation {
@@ -127,7 +141,11 @@ extension ShadowsocksAdapter {
                     combinedKey.append(writeIV)
                     return CCCrypto(operation: .encrypt, mode: .rc4, algorithm: .rc4, initialVector: nil, key: MD5Hash.final(combinedKey))
                 }
+
+            default:
+                return nil
             }
         }
     }
+
 }

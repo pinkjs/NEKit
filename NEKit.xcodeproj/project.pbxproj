@@ -288,6 +288,11 @@
 		36E9CD001DD6EEF5003597CE /* QueueFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E9CCFE1DD6EEF5003597CE /* QueueFactory.swift */; };
 		36E9CD041DD6F0DE003597CE /* Resolver.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 360F392B1DD2068E002BED59 /* Resolver.framework */; };
 		36E9CD051DD6F0DE003597CE /* Resolver.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 360F392B1DD2068E002BED59 /* Resolver.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		38BF7764249245A60092CE9B /* AeadCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BF7763249245A60092CE9B /* AeadCrypto.swift */; };
+		38BF7766249245C30092CE9B /* SwiftGCM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BF7765249245C30092CE9B /* SwiftGCM.swift */; };
+		38BF7768249246B90092CE9B /* CryptoAeadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BF7767249246B90092CE9B /* CryptoAeadProcessor.swift */; };
+		38BF776A249246F20092CE9B /* HKDF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BF7769249246F20092CE9B /* HKDF.swift */; };
+		38BF776C249247C10092CE9B /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BF776B249247C10092CE9B /* Data.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -555,6 +560,11 @@
 		36DB3CEE1E0D610500D907DB /* IPAddressSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IPAddressSpec.swift; sourceTree = "<group>"; };
 		36E44A011CF2ED4800185DBF /* TUNInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TUNInterface.swift; sourceTree = "<group>"; };
 		36E9CCFE1DD6EEF5003597CE /* QueueFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QueueFactory.swift; path = Tunnel/QueueFactory.swift; sourceTree = "<group>"; };
+		38BF7763249245A60092CE9B /* AeadCrypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AeadCrypto.swift; sourceTree = "<group>"; };
+		38BF7765249245C30092CE9B /* SwiftGCM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftGCM.swift; sourceTree = "<group>"; };
+		38BF7767249246B90092CE9B /* CryptoAeadProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoAeadProcessor.swift; sourceTree = "<group>"; };
+		38BF7769249246F20092CE9B /* HKDF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HKDF.swift; sourceTree = "<group>"; };
+		38BF776B249247C10092CE9B /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -802,6 +812,9 @@
 				3650FAF61D27D64500444E79 /* MD5Hash.swift */,
 				3650FAE41D27BA5300444E79 /* SodiumStreamCrypto.swift */,
 				3650FAE11D27BA0900444E79 /* StreamCryptoProtocol.swift */,
+				38BF7763249245A60092CE9B /* AeadCrypto.swift */,
+				38BF7765249245C30092CE9B /* SwiftGCM.swift */,
+				38BF7769249246F20092CE9B /* HKDF.swift */,
 			);
 			path = Crypto;
 			sourceTree = "<group>";
@@ -963,6 +976,7 @@
 				3611765C1E000A5400A1A058 /* ProtocolObfuscater.swift */,
 				3611765F1E00305500A1A058 /* StreamObfuscater.swift */,
 				361176621E00361600A1A058 /* CryptoStreamProcessor.swift */,
+				38BF7767249246B90092CE9B /* CryptoAeadProcessor.swift */,
 			);
 			path = Shadowsocks;
 			sourceTree = "<group>";
@@ -1049,6 +1063,7 @@
 				361176591DFFE98700A1A058 /* Buffer.swift */,
 				36D4007C1E07E48B00583102 /* HTTPURL.swift */,
 				36DB3CE31E0BCB1600D907DB /* UInt128.swift */,
+				38BF776B249247C10092CE9B /* Data.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1551,6 +1566,7 @@
 				36C48D7B1CF88EDA0071804F /* Rule.swift in Sources */,
 				36C63E051D02C0B700A00CA2 /* TCPStack.swift in Sources */,
 				36411A741D1FBFB0005F4108 /* IPPool.swift in Sources */,
+				38BF7768249246B90092CE9B /* CryptoAeadProcessor.swift in Sources */,
 				362950551D6AE3B6001A30F6 /* RuleMatchEvent.swift in Sources */,
 				36C48D741CF88ED40071804F /* NWTCPSocket.swift in Sources */,
 				36C48D5A1CF88EB60071804F /* HTTPAdapterFactory.swift in Sources */,
@@ -1565,11 +1581,13 @@
 				36C48D701CF88ECB0071804F /* TUNInterface.swift in Sources */,
 				36C48D6C1CF88ECB0071804F /* Port.swift in Sources */,
 				36C48D861CF88EE60071804F /* Tunnel.swift in Sources */,
+				38BF7764249245A60092CE9B /* AeadCrypto.swift in Sources */,
 				36411A5D1D167AA9005F4108 /* DNSSessionMatchResult.swift in Sources */,
 				3629504C1D6AE30C001A30F6 /* ProxySocketEvent.swift in Sources */,
 				36411A661D167AF2005F4108 /* DirectRule.swift in Sources */,
 				36C48D7A1CF88EDA0071804F /* DomainListRule.swift in Sources */,
 				36C48D621CF88EB60071804F /* ShadowsocksAdapter.swift in Sources */,
+				38BF7766249245C30092CE9B /* SwiftGCM.swift in Sources */,
 				36411A631D167AE0005F4108 /* AllRule.swift in Sources */,
 				368CBDA71D7911FA003CEA62 /* RejectAdapter.swift in Sources */,
 				36C48D5F1CF88EB60071804F /* DirectAdapter.swift in Sources */,
@@ -1617,9 +1635,11 @@
 				36C48D581CF88EB60071804F /* AuthenticationServerAdapterFactory.swift in Sources */,
 				36C48D561CF88EB60071804F /* AdapterFactoryManager.swift in Sources */,
 				36C48D751CF88ED40071804F /* RawSocketFactory.swift in Sources */,
+				38BF776A249246F20092CE9B /* HKDF.swift in Sources */,
 				36C48D7C1CF88EDA0071804F /* RuleManager.swift in Sources */,
 				36A719F81D64078800DC35F5 /* ObserverFactory.swift in Sources */,
 				36A719F31D634EA600DC35F5 /* Observer.swift in Sources */,
+				38BF776C249247C10092CE9B /* Data.swift in Sources */,
 				3650FAEF1D27C8A900444E79 /* CCCrypto.swift in Sources */,
 				36C48D611CF88EB60071804F /* SecureHTTPAdapter.swift in Sources */,
 				36C48D721CF88ECF0071804F /* GCDProxyServer.swift in Sources */,
